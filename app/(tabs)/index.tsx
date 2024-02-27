@@ -1,51 +1,32 @@
-import { StyleSheet } from 'react-native';
 import { useQuery } from 'urql';
+import { graphql } from '@/graphql/client';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-import { graphql } from '@/utils/urqlClient';
+import { Button, Spinner, YStack } from 'tamagui';
+import { FactCard, FactFragment } from '@/components/FactCard';
 
-const HelloQuery = graphql(`
-  query Todos($name: String) {
-    hello(name: $name)
-  }
-`);
+const FactQuery = graphql(
+  `
+    query RandomFact {
+      randomFact {
+        id
+        ...FactFragment
+      }
+    }
+  `,
+  [FactFragment]
+);
 
 export default function TabOneScreen() {
-  const [result] = useQuery({
-    query: HelloQuery,
-    variables: {
-      name: 'Luke Skywalker',
-    },
-  });
+  const [{ data, fetching }, executeQuery] = useQuery({ query: FactQuery });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <Text>{result.data?.hello}</Text>
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
+    <YStack justifyContent="center" flex={1} mx={10}>
+      <Button onPress={() => executeQuery({ requestPolicy: 'network-only' })}>
+        Fetch fact
+        {fetching && <Spinner size="small" color="$green10" />}
+      </Button>
+
+      <FactCard data={data?.randomFact} />
+    </YStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

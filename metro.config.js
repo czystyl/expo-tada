@@ -2,15 +2,21 @@
 const { getDefaultConfig } = require('expo/metro-config');
 
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+const config = getDefaultConfig(__dirname, {
+  // [Web-only]: Enables CSS support in Metro.
+  isCSSEnabled: true,
+});
 
-console.log(111, require.resolve('readable-stream'));
-console.log(333, require.resolve('stream/web'));
+// config.resolver.extraNodeModules = {
+//   ...config.resolver.extraNodeModules,
+//   'stream/web': require.resolve('readable-stream'),
+//   stream: require.resolve('readable-stream'),
+// };
 
-config.resolver.extraNodeModules = {
-  ...config.resolver.extraNodeModules,
-  'stream/web': require.resolve('readable-stream'),
-  stream: require.resolve('readable-stream'),
-};
-
-module.exports = config;
+// add nice web support with optimizing compiler + CSS extraction
+const { withTamagui } = require('@tamagui/metro-plugin');
+module.exports = withTamagui(config, {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  outputCSS: './tamagui-web.css',
+});

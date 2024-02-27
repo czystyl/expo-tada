@@ -11,7 +11,9 @@ import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { Provider } from 'urql';
-import { client } from '@/utils/urqlClient';
+import { client } from '@/graphql/client';
+import { TamaguiProvider } from 'tamagui';
+import tamaguiConfig from '@/tamagui.config';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,7 +30,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
     ...FontAwesome.font,
   });
 
@@ -55,12 +58,16 @@ function RootLayoutNav() {
 
   return (
     <Provider value={client}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
-      </ThemeProvider>
+      <TamaguiProvider config={tamaguiConfig}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </ThemeProvider>
+      </TamaguiProvider>
     </Provider>
   );
 }

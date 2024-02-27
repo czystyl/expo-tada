@@ -1,3 +1,12 @@
+type Fact {
+  id: ID!
+  language: String!
+  permalink: String!
+  source: String!
+  sourceUrl: String!
+  text: String!
+}
+
 type Query {
-  hello(name: String): String!
+  randomFact: Fact!
 }
