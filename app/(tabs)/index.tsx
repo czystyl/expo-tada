@@ -4,11 +4,10 @@ import { graphql } from '@/graphql/client';
 import { Button, Spinner, YStack } from 'tamagui';
 import { FactCard, FactFragment } from '@/components/FactCard';
 
-const FactQuery = graphql(
+const FragmentQuery = graphql(
   `
     query RandomFact {
       randomFact {
-        id
         ...FactFragment
       }
     }
@@ -17,7 +16,7 @@ const FactQuery = graphql(
 );
 
 export default function TabOneScreen() {
-  const [{ data, fetching }, executeQuery] = useQuery({ query: FactQuery });
+  const [{ data, fetching }, executeQuery] = useQuery({ query: FragmentQuery });
 
   return (
     <YStack justifyContent="center" flex={1} mx={10}>

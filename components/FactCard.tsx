@@ -7,16 +7,13 @@ export const FactFragment = graphql(`
   fragment FactFragment on Fact {
     id
     text
-    source
     sourceUrl
-    language
-    permalink
   }
 `);
 
-interface Props {
+type Props = {
   data?: FragmentOf<typeof FactFragment>;
-}
+};
 
 export function FactCard({ data }: Props) {
   const fact = readFragment(FactFragment, data);
@@ -26,16 +23,7 @@ export function FactCard({ data }: Props) {
   }
 
   return (
-    <Card
-      elevate
-      bordered
-      size="$4"
-      animation="bouncy"
-      mih={300}
-      scale={0.9}
-      hoverStyle={{ scale: 0.925 }}
-      pressStyle={{ scale: 0.875 }}
-    >
+    <Card elevate bordered size="$4" animation="bouncy" mih={300} scale={0.9}>
       <Card.Header>
         <H3>Random Fact</H3>
         <Paragraph theme="alt2">{fact.id}</Paragraph>
