@@ -4,7 +4,7 @@ import { Button, Card, H3, Paragraph, View, XStack, YStack } from 'tamagui';
 import { ExternalLink } from './ExternalLink';
 
 export const FactFragment = graphql(`
-  fragment FactFragment on Fact {
+  fragment FactFragment on RandomFact {
     id
     text
     sourceUrl

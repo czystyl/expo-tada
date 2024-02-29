@@ -1,12 +1,17 @@
-type Fact {
+type NumberFact {
+  text: String!
+}
+
+type Query {
+  numberFact(number: Int!): NumberFact!
+  randomFact: RandomFact!
+}
+
+type RandomFact {
   id: ID!
   language: String!
   permalink: String!
   source: String!
   sourceUrl: String!
   text: String!
-}
-
-type Query {
-  randomFact: Fact!
 }

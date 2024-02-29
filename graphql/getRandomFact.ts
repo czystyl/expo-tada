@@ -18,4 +18,4 @@ const factSchema = z.object({
   permalink: z.string(),
 });
 
-export type Fact = z.infer<typeof factSchema>;
+export type RandomFact = z.infer<typeof factSchema>;
